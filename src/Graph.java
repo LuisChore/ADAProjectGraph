@@ -9,7 +9,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Random;
-
+import java.util.*;
 // Class for the problem number 3
 class Coordinate{
     public double x,y;
@@ -297,4 +297,92 @@ public class Graph<T> {
             ex.printStackTrace();
         }
     }
+
+
+
+
+    /******************************** PROJECT 2 ************************/
+    /** RECURSIVE DFS ****/
+
+    public Graph DFSTree(int id_node){
+        Graph<Integer> dfstree = new Graph<>(numNodes,0,false);
+        ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
+        for(int i=0;i<this.adjacencyList.size();i++){
+            visited.add(false);
+        }
+        dfs(id_node,dfstree,visited);
+        return dfstree;
+    }
+
+
+    public void dfs(int u, Graph<Integer> new_graph,ArrayList<Boolean> vis){
+        vis.set(u,true);
+        for(int i=0;i<this.adjacencyList.get(u).size();i++){
+            int v = adjacencyList.get(u).get(i);
+            if(!vis.get(v)){
+                new_graph.addEdge(u,v);
+                dfs(v,new_graph,vis);
+            }
+        }
+    }
+
+
+
+
+    /** BFS ***/
+    public Graph BFSTree(int id_node){
+
+        Graph<Integer> bfstree = new Graph<>(numNodes,0,false);
+        ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
+        for(int i=0;i<this.adjacencyList.size();i++){
+            visited.add(false);
+        }
+
+        Queue<Integer> q = new LinkedList<>();
+        q.add(id_node);
+        visited.set(id_node,true);
+        while(q.isEmpty() == false){
+            int u = q.peek();
+            q.poll();
+            for(int i=0;i<this.adjacencyList.get(u).size();i++){
+                int v = adjacencyList.get(u).get(i);
+                if(!visited.get(v)){
+                    bfstree.addEdge(u,v);
+                    visited.set(v,true);
+                    q.add(v);
+                }
+            }
+        }
+        return bfstree;
+    }
+
+
+
+    public Graph DFSRTree(int id_node){
+        Graph<Integer> dfstree = new Graph<>(numNodes,0,false);
+        ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
+        for(int i=0;i<this.adjacencyList.size();i++){
+            visited.add(false);
+        }
+        Stack<Integer> S = new Stack<>();
+        S.add(id_node);
+        visited.set(id_node,true);
+
+        while(S.isEmpty() == false){
+            int u = S.peek();
+            S.pop();
+            for(int i = 0;i<this.adjacencyList.get(u).size();i++){
+                int v = adjacencyList.get(u).get(i);
+                if(!visited.get(v)){
+                    S.add(v);
+                    visited.set(v,true);
+                    dfstree.addEdge(u,v);
+                }
+            }
+        }
+
+        return dfstree;
+    }
+
+
 }
