@@ -356,7 +356,9 @@ public class Graph<T> {
         return bfstree;
     }
 
-
+    /**
+     * ITERATIVE DFS
+     */
 
     public Graph DFSRTree(int id_node){
         Graph<Integer> dfstree = new Graph<>(numNodes,0,false);
