@@ -50,6 +50,8 @@ public class Main {
         g12.writeGephiFile("Geographic500");
 
  **/
+
+///// PROJECT 2 /////////
         Graph<Integer> g1 = Graph.graphGeneratorErdosRenyi(30,30,false,false);
         g1.writeGephiFile("Erdos30");
         Graph<Integer> temp = g1.BFSTree(0);
