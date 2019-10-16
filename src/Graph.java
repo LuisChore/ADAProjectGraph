@@ -7,24 +7,74 @@
  */
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Random;
 import java.util.*;
+
+
 // Class for the problem number 3
 class Coordinate{
     public double x,y;
 }
 
 
-public class Graph<T> {
+
+class Pair <X, Y> implements  Comparable<Pair>{
+    X _first;
+    Y _second;
+
+    public Pair(X f, Y s) { _first = f; _second = s; }
+
+    X first() { return _first; }
+    Y second() { return _second; }
+
+    void setFirst(X f) { _first = f; }
+    void setSecond(Y s) { _second = s; }
+
+    public int hashCode(){
+        return (Integer)_first * 1000000007 + (int)_second;
+    }
+
+    public boolean equals(Object obj){
+        if(this == obj)
+            return true;
+        if(obj == null)
+            return false;
+        if(this.getClass() != obj.getClass())
+            return false;
+        Pair temp = (Pair<X,Y>) obj;
+        if(this._first == temp._first && this._second == temp._second)
+            return true;
+        return false;
+
+    }
+
+    public int compareTo(Pair other){
+        if((double)this.second() < (double)other.second())
+            return 1;
+        if((double)this.second() > (double)other.second())
+            return -1;
+        return 0;
+
+    }
+}
+
+
+
+
+
+
+
+public class Graph {
     /**
-     * Representation of graph with an adjacency list
+     * Representation of a graph with an adjacency list
      */
     private int numNodes;
     private int numEdges;
     private  boolean directed;
-    private ArrayList<ArrayList<Integer>> adjacencyList = new ArrayList< ArrayList<Integer>>();
-    private ArrayList<T> Nodes = new ArrayList<T>();
+    private ArrayList<ArrayList<Pair>> adjacencyList = new ArrayList< ArrayList<Pair>>();
+    public ArrayList<Node> Nodes = new ArrayList<>();
+    private ArrayList<Coordinate> coordinates = new ArrayList<>();
+
+
 
     /***
      * CONSTRUCTOR
@@ -36,9 +86,10 @@ public class Graph<T> {
         this.numNodes = numNodes;
         this.numEdges = numEdges;
         this.directed = directed;
-        for(int i=0;i<numNodes;i++)
+        for(int i=0;i<numNodes;i++){
             adjacencyList.add(new ArrayList<>());
-
+            Nodes.add( new Node(i));
+        }
 
     }
 
@@ -46,7 +97,7 @@ public class Graph<T> {
     // check if an edge (u,v) is in the graph
     private boolean checkEdge(int u,int v){
         for(int i=0;i<adjacencyList.get(u).size();i++){
-            if( adjacencyList.get(u).get(i) == v){
+            if( (Integer)adjacencyList.get(u).get(i).first() == v){
                 return true;
             }
         }
@@ -54,13 +105,25 @@ public class Graph<T> {
 
     }
 
+
+    private double getWeightEdge(int u,int v){
+        double ans = 0;
+
+        for(int i=0;i<adjacencyList.get(u).size();i++){
+            if( (Integer)adjacencyList.get(u).get(i).first() == v){
+                return (Double)adjacencyList.get(u).get(i).second();
+            }
+        }
+        return ans;
+    }
+
     /*
         Add a new edge considering if it's directed
      */
-    private void addEdge(int u,int v){
-        adjacencyList.get(u).add(v);
+    private void addEdge(int u,int v,double weight){
+        adjacencyList.get(u).add(new Pair(v,weight));
         if(!directed && u!=v)
-            adjacencyList.get(v).add(u);
+            adjacencyList.get(v).add(new Pair(u,weight));
         numEdges++;
     }
 
@@ -71,11 +134,25 @@ public class Graph<T> {
         for(int i=0;i<numNodes;i++){
             System.out.println("Node: " + (i +1) );
             for(int j=0;j<adjacencyList.get(i).size();j++){
-                System.out.print( ( 1+ adjacencyList.get(i).get(j) )+ ", ");
+                System.out.print( ( 1+ (Integer)adjacencyList.get(i).get(j).first() )+ ", ");
             }
             System.out.println();
         }
     }
+
+    /*
+        Only for testing
+     */
+    public void printGraph(boolean b){
+        for(int i=0;i<numNodes;i++){
+            System.out.println("Node: " + (i +1) );
+            for(int j=0;j<adjacencyList.get(i).size();j++){
+                System.out.print(  "(" +  ( 1+ (Integer)adjacencyList.get(i).get(j).first() )+ ","  + adjacencyList.get(i).get(j).second()  + ")" );
+            }
+            System.out.println();
+        }
+    }
+
 
 
     /*
@@ -87,13 +164,27 @@ public class Graph<T> {
         return randomNumber;
     }
 
-    /*
 
+    /*
         It generates a random number [0,1]
      */
     public static double getRandomNumber(){
         return Math.random();
     }
+
+
+
+    /*
+        It generates a random number [rangeMin,rangeMax]
+     */
+    public static double getRandomNumber(double rangeMin, double rangeMax){
+        Random r = new Random();
+        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+        return randomValue;
+    }
+
+
+
 
     /**
      *  Erdös y Rényi Model
@@ -105,8 +196,8 @@ public class Graph<T> {
      * @return
      */
 
-    public static  Graph<Integer> graphGeneratorErdosRenyi(int nodes,int edges,boolean directed,boolean selfloop){
-        Graph<Integer> G = new Graph(nodes,0,directed);
+    public static  Graph graphGeneratorErdosRenyi(int nodes,int edges,boolean directed,boolean selfloop){
+        Graph G = new Graph(nodes,0,directed);
         int countEdges = 0;
         // you have to stop the algorithm until you have m edges in your graph
         while(countEdges < edges){
@@ -120,7 +211,7 @@ public class Graph<T> {
                 continue;
             }
             // add new edge
-            G.addEdge(U,V);
+            G.addEdge(U,V,0.0);
             countEdges++;
 
         }
@@ -136,9 +227,9 @@ public class Graph<T> {
      * @param selfloop
      * @return
      */
-    public static Graph<Integer> graphGeneratorGilbert(int nodes, double p, boolean directed, boolean selfloop){
+    public static Graph graphGeneratorGilbert(int nodes, double p, boolean directed, boolean selfloop){
         // create an empty graph with n nodes
-        Graph<Integer> G  = new Graph(nodes,0,directed);
+        Graph G  = new Graph(nodes,0,directed);
 
         // check al pairs of nodes and check the probability that those nodes are connected
         for(int i=0;i<nodes;i++){
@@ -162,7 +253,7 @@ public class Graph<T> {
                 // test the probability
                 double temp = getRandomNumber();
                 if(p>=temp){
-                    G.addEdge(i,j);
+                    G.addEdge(i,j,0);
                 }
             }
         }
@@ -178,8 +269,8 @@ public class Graph<T> {
      * @param selfloop
      * @return
      */
-    public static Graph<Coordinate> graphGeneratorGeographic(int nodes,double r, boolean directed,boolean selfloop){
-        Graph<Coordinate> G = new Graph<Coordinate>(nodes,0,directed);
+    public static Graph graphGeneratorGeographic(int nodes,double r, boolean directed,boolean selfloop){
+        Graph G = new Graph(nodes,0,directed);
         // create graph
         // n random pairs of numbers between 0 to 1 to generate a graph
         // inside an unitary area
@@ -190,7 +281,7 @@ public class Graph<T> {
             Coordinate c = new Coordinate();
             c.x = x;
             c.y = y;
-            G.Nodes.add(c);
+            G.coordinates.add(c);
         }
 
 
@@ -209,9 +300,9 @@ public class Graph<T> {
                     continue;
                 }
 
-                double distance = getDistance(G.Nodes.get(i),G.Nodes.get(j));
+                double distance = getDistance(G.coordinates.get(i),G.coordinates.get(j));
                 if(distance<=r)
-                    G.addEdge(i,j);
+                    G.addEdge(i,j,0);
 
             }
         }
@@ -239,14 +330,14 @@ public class Graph<T> {
      */
     public static Graph graphGeneratorBarabasiAlbert(int nodes,double d,boolean directed,boolean selfloop){
 
-        Graph<Integer> G = new Graph<>(nodes,0,directed);
+        Graph G = new Graph(nodes,0,directed);
 
         // By definition the first d nodes  are
         // all connected all vs all
         int integerD = (int) d;
         for(int i=0;i<integerD;i++){
             for(int j=i + 1;j<d;j++){
-                G.addEdge(i,j);
+                G.addEdge(i,j,0);
             }
         }
 
@@ -270,7 +361,7 @@ public class Graph<T> {
                 double probability = 1.00 - (double)degreeJ/d;
                 double rng = getRandomNumber();
                 if(rng<=probability){
-                    G.addEdge(i,j);
+                    G.addEdge(i,j,0);
                 }
             }
         }
@@ -278,13 +369,15 @@ public class Graph<T> {
     }
 
 
+
     public  void writeGephiFile(String name){
         try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
-            for(int i=0;i<this.numNodes;i++){
-                 writer.write("" + (i+1) );
+            for(int i=0;i<this.adjacencyList.size();i++){
+                writer.write("" + Nodes.get(i).getName() );
 
                 for(int j=0;j<this.adjacencyList.get(i).size();j++){
-                    writer.write(";" + (1 + adjacencyList.get(i).get(j)));
+                    int v = (int) adjacencyList.get(i).get(j).first();
+                    writer.write(";" + Nodes.get(v).getName());
                 }
 
                 writer.write("\n") ;
@@ -299,13 +392,60 @@ public class Graph<T> {
     }
 
 
+    public  void writeGephiFileW(String name){
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
+
+            writer.write("source;target;weight\n");
+
+            for(int i=0;i<this.adjacencyList.size();i++){
+                for(int j=0;j<this.adjacencyList.get(i).size();j++){
+                    int v = (int) adjacencyList.get(i).get(j).first();
+                    double w = (double) adjacencyList.get(i).get(j).second();
+                    String dstring = String.format("%.2f", w);
+                    writer.write( i + ";" +  v + ";" + dstring + "\n");
+                }
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
 
 
+
+
+
+    public  void writeGephiFileWF(String name){
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
+
+            for(int i=0;i<adjacencyList.size();i++){
+                writer.write(";" + Nodes.get(i).getName());
+            }
+
+            writer.write("\n") ;
+
+
+            for(int i=0;i<adjacencyList.size();i++){
+
+                writer.write( Nodes.get(i).getName());
+                for(int j=0;j<adjacencyList.size();j++){
+                    String dstring = String.format("%.2f", getWeightEdge(i,j));
+                    writer.write(";" + dstring);
+                }
+                writer.write("\n") ;
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
     /******************************** PROJECT 2 ************************/
     /** RECURSIVE DFS ****/
 
     public Graph DFSTree(int id_node){
-        Graph<Integer> dfstree = new Graph<>(numNodes,0,false);
+        Graph dfstree = new Graph(numNodes,0,false);
         ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
         for(int i=0;i<this.adjacencyList.size();i++){
             visited.add(false);
@@ -315,12 +455,12 @@ public class Graph<T> {
     }
 
 
-    public void dfs(int u, Graph<Integer> new_graph,ArrayList<Boolean> vis){
+    public void dfs(int u, Graph new_graph,ArrayList<Boolean> vis){
         vis.set(u,true);
         for(int i=0;i<this.adjacencyList.get(u).size();i++){
-            int v = adjacencyList.get(u).get(i);
+            int v = (Integer) adjacencyList.get(u).get(i)._first;
             if(!vis.get(v)){
-                new_graph.addEdge(u,v);
+                new_graph.addEdge(u,v,0);
                 dfs(v,new_graph,vis);
             }
         }
@@ -332,7 +472,7 @@ public class Graph<T> {
     /** BFS ***/
     public Graph BFSTree(int id_node){
 
-        Graph<Integer> bfstree = new Graph<>(numNodes,0,false);
+        Graph bfstree = new Graph(numNodes,0,false);
         ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
         for(int i=0;i<this.adjacencyList.size();i++){
             visited.add(false);
@@ -345,9 +485,9 @@ public class Graph<T> {
             int u = q.peek();
             q.poll();
             for(int i=0;i<this.adjacencyList.get(u).size();i++){
-                int v = adjacencyList.get(u).get(i);
+                int v = (Integer)adjacencyList.get(u).get(i)._first;
                 if(!visited.get(v)){
-                    bfstree.addEdge(u,v);
+                    bfstree.addEdge(u,v,0);
                     visited.set(v,true);
                     q.add(v);
                 }
@@ -361,7 +501,7 @@ public class Graph<T> {
      */
 
     public Graph DFSRTree(int id_node){
-        Graph<Integer> dfstree = new Graph<>(numNodes,0,false);
+        Graph dfstree = new Graph(numNodes,0,false);
         ArrayList<Boolean> visited =new ArrayList<>(this.adjacencyList.size());
         for(int i=0;i<this.adjacencyList.size();i++){
             visited.add(false);
@@ -374,17 +514,123 @@ public class Graph<T> {
             int u = S.peek();
             S.pop();
             for(int i = 0;i<this.adjacencyList.get(u).size();i++){
-                int v = adjacencyList.get(u).get(i);
+                int v = (Integer) adjacencyList.get(u).get(i)._first;
                 if(!visited.get(v)){
                     S.add(v);
                     visited.set(v,true);
-                    dfstree.addEdge(u,v);
+                    dfstree.addEdge(u,v,0);
                 }
             }
         }
 
         return dfstree;
     }
+
+
+
+
+
+    /**** ***************PROJECT 3 ************/
+
+    void randomEdgeValues(double min, double max) {
+
+        HashMap<Pair, Double> map = new HashMap<>();
+
+        for(int i=0;i<this.adjacencyList.size();i++){
+            for(int j=0;j<this.adjacencyList.get(i).size();j++){
+                int u = i;
+                int v = (Integer) adjacencyList.get(i).get(j).first();
+                if( u == v){
+                    continue;
+                }
+
+                if(!directed && v < u){
+
+                    /*
+
+                             FAAAAAILLL
+                    Pair temp = new Pair(v,u);
+                    double weight = map.get(temp);
+                    System.out.println( "u: " + u  + ", v:" + v);
+                    System.out.println(weight);
+                    adjacencyList.get(i).get(j).setSecond(weight);
+                    continue;
+getWeightEdge(i,j)
+
+                     */
+                    double other_edge = this.getWeightEdge(v,u);
+                    adjacencyList.get(i).get(j).setSecond((other_edge));
+                    continue;
+                }
+
+                double W = getRandomNumber(min,max);
+                adjacencyList.get(i).get(j).setSecond(W);
+
+
+                Pair temp = new Pair(u,v);
+                map.put(temp,W);
+
+
+
+            }
+        }
+    }
+
+
+    Graph Dijkstra(Node node){
+        final double inf = 1e9;
+        int n = adjacencyList.size();
+        Graph g = new Graph(n,0,false);
+        ArrayList<Double>  dist=new ArrayList<>(this.adjacencyList.size());
+        ArrayList<Integer>  parent=new ArrayList<>(this.adjacencyList.size());
+
+        for(int i=0;i<this.adjacencyList.size();i++){
+            dist.add(inf);
+            parent.add(i);
+        }
+
+        int u = node.getId();
+        g.Nodes.get(u).setName( "node_" + (u + 1) + " - 0.0 ");
+        dist.set(u,0.0);
+
+        PriorityQueue < Pair > pq = new PriorityQueue < Pair >();
+
+        pq.offer(new Pair(u,0.0));
+        while(pq.size()>0){
+            Pair top = pq.poll();
+            double d = (double) top.second();
+            u = (int) top.first();
+
+            if(dist.get(u)<d){
+                continue;
+            }
+;
+            for(int i = 0; i < adjacencyList.get(u).size();i++){
+                int v = (int) adjacencyList.get(u).get(i).first();
+                double w = (double) adjacencyList.get(u).get(i).second();
+                if( dist.get(u) + w < dist.get(v)){
+                    dist.set(v,dist.get(u) + w);
+                    pq.offer(new Pair(v,dist.get(v)));
+                    parent.set(v,u);
+                }
+            }
+
+        }
+
+        for(int i=0;i<n;i++){
+            u = parent.get(i);
+            String dstring = String.format("%.2f", dist.get(i));
+            g.Nodes.get(i).setName( "node_" + (i + 1) + "-" + dstring);
+            int v = i;
+            if(u != v){
+                g.addEdge(u,v,0);
+            }
+        }
+
+
+        return g;
+    }
+
 
 
 }
