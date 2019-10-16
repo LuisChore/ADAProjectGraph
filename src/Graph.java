@@ -3,16 +3,15 @@
  * VÁZQUEZ CHOREÑO LUIS ERNESTO
  * Centro de Investigación en Computación
  * 2019
- *
  */
+
+
 
 import java.io.*;
 import java.util.*;
 
 public class Graph {
-    /**
-     * Representation of a graph with an adjacency list
-     */
+    /* Representation of a graph with an adjacency list*/
     private int numNodes;
     private int numEdges;
     private  boolean directed;
@@ -22,9 +21,6 @@ public class Graph {
 
 
 
-    /***
-     * CONSTRUCTOR
-     */
     Graph(int numNodes,int numEdges,boolean directed){
         this.numNodes = numNodes;
         this.numEdges = numEdges;
@@ -60,9 +56,7 @@ public class Graph {
         return ans;
     }
 
-    /*
-        Add a new edge considering if it's directed
-     */
+    /* Add a new edge considering if it's directed*/
     private void addEdge(int u,int v,double weight){
         adjacencyList.get(u).add(new Pair(v,weight));
         if(!directed && u!=v)
@@ -70,9 +64,7 @@ public class Graph {
         numEdges++;
     }
 
-    /*
-        Only for testing
-     */
+    /*  Only for testing*/
     public void printGraph(){
         for(int i=0;i<numNodes;i++){
             System.out.println("Node: " + (i +1) );
@@ -83,9 +75,7 @@ public class Graph {
         }
     }
 
-    /*
-        Only for testing
-     */
+    /*Only for testing*/
     public void printGraph(boolean b){
         for(int i=0;i<numNodes;i++){
             System.out.println("Node: " + (i +1) );
@@ -98,40 +88,10 @@ public class Graph {
 
 
 
-    /*
-        It generates a random number [0,range-1]
-     */
-    public static int getRandomNumber(int range){
-        Random RandomObject = new Random();
-        int randomNumber = RandomObject.nextInt(range);
-        return randomNumber;
-    }
-
-
-    /*
-        It generates a random number [0,1]
-     */
-    public static double getRandomNumber(){
-        return Math.random();
-    }
 
 
 
-    /*
-        It generates a random number [rangeMin,rangeMax]
-     */
-    public static double getRandomNumber(double rangeMin, double rangeMax){
-        Random r = new Random();
-        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
-        return randomValue;
-    }
-
-
-
-
-    /**
-     *  Erdös y Rényi Model
-     */
+    /* Erdös y Rényi Model*/
 
     public static  Graph graphGeneratorErdosRenyi(int nodes,int edges,boolean directed,boolean selfloop){
         Graph G = new Graph(nodes,0,directed);
@@ -155,9 +115,7 @@ public class Graph {
         return G;
     }
 
-    /***
-     *  Modelo de Gilbert
-     */
+    /* Modelo de Gilbert*/
     public static Graph graphGeneratorGilbert(int nodes, double p, boolean directed, boolean selfloop){
         // create an empty graph with n nodes
         Graph G  = new Graph(nodes,0,directed);
@@ -192,9 +150,7 @@ public class Graph {
 
     }
 
-    /***
-     * Modelo Gn,r geográfico simple.
-     */
+    /* Modelo Gn,r geográfico simple.*/
     public static Graph graphGeneratorGeographic(int nodes,double r, boolean directed,boolean selfloop){
         Graph G = new Graph(nodes,0,directed);
         // create graph
@@ -246,9 +202,7 @@ public class Graph {
     }
 
 
-    /***
-     *  Variante del modelo Gn,d Barabási-Albert
-     */
+    /*Variante del modelo Gn,d Barabási-Albert*/
     public static Graph graphGeneratorBarabasiAlbert(int nodes,double d,boolean directed,boolean selfloop){
 
         Graph G = new Graph(nodes,0,directed);
@@ -291,79 +245,13 @@ public class Graph {
 
 
 
-    public  void writeGephiFile(String name){
-        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
-            for(int i=0;i<this.adjacencyList.size();i++){
-                writer.write("" + Nodes.get(i).getName() );
-
-                for(int j=0;j<this.adjacencyList.get(i).size();j++){
-                    int v = (int) adjacencyList.get(i).get(j).first();
-                    writer.write(";" + Nodes.get(v).getName());
-                }
-
-                writer.write("\n") ;
 
 
-            }
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
+    /************************************************/
+    /******************PROJECT 3 ********************/
+    /************************************************/
 
-
-    public  void writeGephiFileW(String name){
-        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
-
-            writer.write("source;target;weight\n");
-
-            for(int i=0;i<this.adjacencyList.size();i++){
-                for(int j=0;j<this.adjacencyList.get(i).size();j++){
-                    int v = (int) adjacencyList.get(i).get(j).first();
-                    double w = (double) adjacencyList.get(i).get(j).second();
-                    String dstring = String.format("%.2f", w);
-                    writer.write( i + ";" +  v + ";" + dstring + "\n");
-                }
-            }
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-
-
-
-
-
-    public  void writeGephiFileWF(String name){
-        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
-
-            for(int i=0;i<adjacencyList.size();i++){
-                writer.write(";" + Nodes.get(i).getName());
-            }
-
-            writer.write("\n") ;
-
-
-            for(int i=0;i<adjacencyList.size();i++){
-
-                writer.write( Nodes.get(i).getName());
-                for(int j=0;j<adjacencyList.size();j++){
-                    String dstring = String.format("%.2f", getWeightEdge(i,j));
-                    writer.write(";" + dstring);
-                }
-                writer.write("\n") ;
-            }
-        }
-        catch(IOException ex)
-        {
-            ex.printStackTrace();
-        }
-    }
-    /******************************** PROJECT 2 ************************/
-    /** RECURSIVE DFS ****/
+    /* RECURSIVE DFS ****/
 
     public Graph DFSTree(int id_node){
         Graph dfstree = new Graph(numNodes,0,false);
@@ -390,7 +278,7 @@ public class Graph {
 
 
 
-    /** BFS ***/
+    /* BFS */
     public Graph BFSTree(int id_node){
 
         Graph bfstree = new Graph(numNodes,0,false);
@@ -417,9 +305,7 @@ public class Graph {
         return bfstree;
     }
 
-    /**
-     * ITERATIVE DFS
-     */
+    /* ITERATIVE DFS*/
 
     public Graph DFSRTree(int id_node){
         Graph dfstree = new Graph(numNodes,0,false);
@@ -450,8 +336,9 @@ public class Graph {
 
 
 
-
-    /**********PROJECT 3 ************/
+    /************************************************/
+    /******************PROJECT 3 ********************/
+    /************************************************/
 
     void randomEdgeValues(double min, double max) {
 
@@ -535,5 +422,110 @@ public class Graph {
     }
 
 
+
+
+
+
+    /************************************************/
+    /******************UTILITIES ********************/
+    /************************************************/
+
+    public  void writeGephiFile(String name){
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
+            for(int i=0;i<this.adjacencyList.size();i++){
+                writer.write("" + Nodes.get(i).getName() );
+
+                for(int j=0;j<this.adjacencyList.get(i).size();j++){
+                    int v = (int) adjacencyList.get(i).get(j).first();
+                    writer.write(";" + Nodes.get(v).getName());
+                }
+
+                writer.write("\n") ;
+
+
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public  void writeGephiFileW(String name){
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
+
+            writer.write("source;target;weight\n");
+
+            for(int i=0;i<this.adjacencyList.size();i++){
+                for(int j=0;j<this.adjacencyList.get(i).size();j++){
+                    int v = (int) adjacencyList.get(i).get(j).first();
+                    double w = (double) adjacencyList.get(i).get(j).second();
+                    String dstring = String.format("%.2f", w);
+                    writer.write( i + ";" +  v + ";" + dstring + "\n");
+                }
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
+
+    public  void writeGephiFileWF(String name){
+        try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
+
+            for(int i=0;i<adjacencyList.size();i++){
+                writer.write(";" + Nodes.get(i).getName());
+            }
+
+            writer.write("\n") ;
+
+
+            for(int i=0;i<adjacencyList.size();i++){
+
+                writer.write( Nodes.get(i).getName());
+                for(int j=0;j<adjacencyList.size();j++){
+                    String dstring = String.format("%.2f", getWeightEdge(i,j));
+                    writer.write(";" + dstring);
+                }
+                writer.write("\n") ;
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
+
+    /*generates a random number [0,range-1]*/
+    public static int getRandomNumber(int range){
+        Random RandomObject = new Random();
+        int randomNumber = RandomObject.nextInt(range);
+        return randomNumber;
+    }
+
+
+    /*It generates a random number [0,1]*/
+    public static double getRandomNumber(){
+        return Math.random();
+    }
+
+
+
+    /*It generates a random number [rangeMin,rangeMax]*/
+    public static double getRandomNumber(double rangeMin, double rangeMax){
+        Random r = new Random();
+        double randomValue = rangeMin + (rangeMax - rangeMin) * r.nextDouble();
+        return randomValue;
+    }
 
 }
