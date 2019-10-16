@@ -13,42 +13,47 @@ public class Main {
 // Project 1
 
 /**
-        Graph<Integer> g1 = Graph.graphGeneratorErdosRenyi(30,10,false,false);
+        Graph g1 = Graph.graphGeneratorErdosRenyi(30,10,false,false);
         g1.writeGephiFile("Erdos30");
 
-        Graph<Integer> g2 = Graph.graphGeneratorErdosRenyi(100,20,false,false);
+        Graph g2 = Graph.graphGeneratorErdosRenyi(100,20,false,false);
         g2.writeGephiFile("Erdos100");
 
-        Graph<Integer> g3 = Graph.graphGeneratorErdosRenyi(500,30,false,false);
+        Graph g3 = Graph.graphGeneratorErdosRenyi(500,30,false,false);
         g3.writeGephiFile("Erdos500");
 
 
-        Graph<Integer> g4 = Graph.graphGeneratorGilbert(30,0.2,false,false);
+
+
+        Graph g4 = Graph.graphGeneratorGilbert(30,0.2,false,false);
         g4.writeGephiFile("Gilbert30");
 
-        Graph<Integer> g5 = Graph.graphGeneratorGilbert(100,0.1,false,false);
+        Graph g5 = Graph.graphGeneratorGilbert(100,0.1,false,false);
         g5.writeGephiFile("Gilbert100");
 
-        Graph<Integer> g6 = Graph.graphGeneratorGilbert(500,0.001,false,false);
+        Graph g6 = Graph.graphGeneratorGilbert(500,0.001,false,false);
         g6.writeGephiFile("Gilbert500");
 
-        Graph<Integer> g7 = Graph.graphGeneratorBarabasiAlbert(30,3,false,false);
+
+
+        Graph g7 = Graph.graphGeneratorBarabasiAlbert(30,3,false,false);
         g7.writeGephiFile("Albert30");
 
-        Graph<Integer> g8 = Graph.graphGeneratorBarabasiAlbert(100,2,false,false);
+        Graph g8 = Graph.graphGeneratorBarabasiAlbert(100,2,false,false);
         g8.writeGephiFile("Albert100");
 
-        Graph<Integer> g9 = Graph.graphGeneratorBarabasiAlbert(500,2,false,false);
+        Graph g9 = Graph.graphGeneratorBarabasiAlbert(500,2,false,false);
         g9.writeGephiFile("Albert500");
 
-        Graph<Coordinate> g10 = Graph.graphGeneratorGeographic(30,0.2,false,false);
+
+
+        Graph g10 = Graph.graphGeneratorGeographic(30,0.2,false,false);
         g10.writeGephiFile("Geographic30");
 
-
-        Graph<Coordinate> g11 = Graph.graphGeneratorGeographic(100,0.1,false,false);
+        Graph g11 = Graph.graphGeneratorGeographic(100,0.1,false,false);
         g11.writeGephiFile("Geographic100");
 
-        Graph<Coordinate> g12 = Graph.graphGeneratorGeographic(500,0.01,false,false);
+        Graph g12 = Graph.graphGeneratorGeographic(500,0.01,false,false);
         g12.writeGephiFile("Geographic500");
 
  **/
@@ -64,7 +69,6 @@ public class Main {
         temp.writeGephiFile("Erdos30DFStree");
         temp = g1.DFSRTree(0);
         temp.writeGephiFile("Erdos30DFSRtree");
-
 
 
 
@@ -183,7 +187,6 @@ public class Main {
         Graph g2 = g1.Dijkstra(g1.Nodes.get(0));
         g2.writeGephiFile("Erdos30Output");
 
-
         g1 = Graph.graphGeneratorErdosRenyi(100,100,false,false);
         g1.randomEdgeValues(1,100);
         g1.writeGephiFileW("Erdos100Input");
@@ -195,6 +198,7 @@ public class Main {
         g1.writeGephiFileW("Erdos500Input");
         g2 = g1.Dijkstra(g1.Nodes.get(0));
         g2.writeGephiFile("Erdos500Output");
+
 
 
 
@@ -218,7 +222,6 @@ public class Main {
 
 
 
-
         g1 = Graph.graphGeneratorBarabasiAlbert(30,15,false,false);
         g1.randomEdgeValues(1,100);
         g1.writeGephiFileW("BarabasiAlbert30Input");
@@ -238,12 +241,13 @@ public class Main {
         g2.writeGephiFile("BarabasiAlbert500Output");
 
 
+
+
         g1 = Graph.graphGeneratorGeographic(30,0.2,false,false);
         g1.randomEdgeValues(1,100);
         g1.writeGephiFileW("Geographic30Input");
         g2 = g1.Dijkstra((g1.Nodes.get(0)));
         g2.writeGephiFile("Geographic30Output");
-
 
         g1 = Graph.graphGeneratorGeographic(100,0.3,false,false);
         g1.randomEdgeValues(1,100);
@@ -256,5 +260,8 @@ public class Main {
         g1.writeGephiFileW("Geographic500Input");
         g2 = g1.Dijkstra((g1.Nodes.get(0)));
         g2.writeGephiFile("Geographic500Output");
+
+
+
     }
 }

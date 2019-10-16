@@ -9,60 +9,6 @@
 import java.io.*;
 import java.util.*;
 
-
-// Class for the problem number 3
-class Coordinate{
-    public double x,y;
-}
-
-
-
-class Pair <X, Y> implements  Comparable<Pair>{
-    X _first;
-    Y _second;
-
-    public Pair(X f, Y s) { _first = f; _second = s; }
-
-    X first() { return _first; }
-    Y second() { return _second; }
-
-    void setFirst(X f) { _first = f; }
-    void setSecond(Y s) { _second = s; }
-
-    public int hashCode(){
-        return (Integer)_first * 1000000007 + (int)_second;
-    }
-
-    public boolean equals(Object obj){
-        if(this == obj)
-            return true;
-        if(obj == null)
-            return false;
-        if(this.getClass() != obj.getClass())
-            return false;
-        Pair temp = (Pair<X,Y>) obj;
-        if(this._first == temp._first && this._second == temp._second)
-            return true;
-        return false;
-
-    }
-
-    public int compareTo(Pair other){
-        if((double)this.second() < (double)other.second())
-            return 1;
-        if((double)this.second() > (double)other.second())
-            return -1;
-        return 0;
-
-    }
-}
-
-
-
-
-
-
-
 public class Graph {
     /**
      * Representation of a graph with an adjacency list
@@ -78,9 +24,6 @@ public class Graph {
 
     /***
      * CONSTRUCTOR
-     * @param numNodes
-     * @param numEdges
-     * @param directed
      */
     Graph(int numNodes,int numEdges,boolean directed){
         this.numNodes = numNodes;
@@ -188,12 +131,6 @@ public class Graph {
 
     /**
      *  Erdös y Rényi Model
-     *
-     * @param nodes
-     * @param edges
-     * @param directed
-     * @param selfloop
-     * @return
      */
 
     public static  Graph graphGeneratorErdosRenyi(int nodes,int edges,boolean directed,boolean selfloop){
@@ -220,12 +157,6 @@ public class Graph {
 
     /***
      *  Modelo de Gilbert
-     *
-     * @param nodes
-     * @param p
-     * @param directed
-     * @param selfloop
-     * @return
      */
     public static Graph graphGeneratorGilbert(int nodes, double p, boolean directed, boolean selfloop){
         // create an empty graph with n nodes
@@ -263,11 +194,6 @@ public class Graph {
 
     /***
      * Modelo Gn,r geográfico simple.
-     * @param nodes
-     * @param r
-     * @param directed
-     * @param selfloop
-     * @return
      */
     public static Graph graphGeneratorGeographic(int nodes,double r, boolean directed,boolean selfloop){
         Graph G = new Graph(nodes,0,directed);
@@ -322,11 +248,6 @@ public class Graph {
 
     /***
      *  Variante del modelo Gn,d Barabási-Albert
-     * @param nodes
-     * @param d
-     * @param directed
-     * @param selfloop
-     * @return
      */
     public static Graph graphGeneratorBarabasiAlbert(int nodes,double d,boolean directed,boolean selfloop){
 
@@ -530,7 +451,7 @@ public class Graph {
 
 
 
-    /**** ***************PROJECT 3 ************/
+    /**********PROJECT 3 ************/
 
     void randomEdgeValues(double min, double max) {
 
@@ -545,19 +466,6 @@ public class Graph {
                 }
 
                 if(!directed && v < u){
-
-                    /*
-
-                             FAAAAAILLL
-                    Pair temp = new Pair(v,u);
-                    double weight = map.get(temp);
-                    System.out.println( "u: " + u  + ", v:" + v);
-                    System.out.println(weight);
-                    adjacencyList.get(i).get(j).setSecond(weight);
-                    continue;
-getWeightEdge(i,j)
-
-                     */
                     double other_edge = this.getWeightEdge(v,u);
                     adjacencyList.get(i).get(j).setSecond((other_edge));
                     continue;
@@ -566,12 +474,7 @@ getWeightEdge(i,j)
                 double W = getRandomNumber(min,max);
                 adjacencyList.get(i).get(j).setSecond(W);
 
-
                 Pair temp = new Pair(u,v);
-                map.put(temp,W);
-
-
-
             }
         }
     }
