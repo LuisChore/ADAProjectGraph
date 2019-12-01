@@ -342,7 +342,6 @@ public class Graph {
 
     void randomEdgeValues(double min, double max) {
 
-        HashMap<Pair, Double> map = new HashMap<>();
 
         for(int i=0;i<this.adjacencyList.size();i++){
             for(int j=0;j<this.adjacencyList.get(i).size();j++){
@@ -422,7 +421,154 @@ public class Graph {
     }
 
 
+    /**********************************************Albert**/
+    /******************PROJECT 4 ********************/
+    /************************************************/
 
+
+    Graph Kruskal_D(){
+        int n = adjacencyList.size();
+        Graph g = new Graph(n,0,false);
+
+
+        Vector<Triple> EdgeList = new Vector<Triple>();
+        for(int i=0;i<n;i++){
+
+            for(int j=0;j<adjacencyList.get(i).size();j++){
+                int v = (int)adjacencyList.get(i).get((j)).first();
+                double w = (double)adjacencyList.get(i).get(j).second();
+                EdgeList.add(new Triple(w,i,v));
+           }
+        }
+
+        Collections.sort(EdgeList);
+
+        double mst_cost = 0;           // all V are disjoint sets at the beginning
+        UnionFind UF = new UnionFind(n);
+        for (int i = 0; i < EdgeList.size(); i++) {                   // for each edge, O(E)
+            Triple front = EdgeList.get(i);
+            if (!UF.isSameSet(front.second(), front.third())) {          // check
+                mst_cost += front.first();            // add the weight of e to MST
+                g.addEdge(front.second(),front.third(),front.first());
+                UF.unionSet(front.second(), front.third());            // link them
+            }
+        }
+        System.out.println("Kruskal: " + mst_cost);
+        return g;
+    }
+
+
+    void numberCC(ArrayList<ArrayList<Integer>> adj,int u,ArrayList<Integer> visited){
+        visited.set(u,1);
+        for(int i=0;i<adj.get(u).size();i++){
+            int v = adj.get(u).get(i);
+            if(visited.get(v) == -1){
+                numberCC(adj,v,visited);
+            }
+        }
+    }
+    int numberCC(ArrayList<ArrayList<Integer>> adj){
+        ArrayList<Integer> visited = new ArrayList<>();
+        int n = adj.size();
+        for(int i=0;i<n;i++){
+            visited.add(-1);
+        }
+        int cc = 0;
+        for(int i=0;i<n;i++){
+            if(visited.get(i) == -1){
+                cc++;
+                numberCC(adj,i,visited);
+            }
+        }
+        return cc;
+    }
+    Graph  Kruskal_I(){
+        int n = adjacencyList.size();
+        Graph g = new Graph(n,0,false);
+        Vector<Triple> EdgeList = new Vector<Triple>();
+
+
+        ArrayList<ArrayList<Integer>> adj = new ArrayList<>();
+
+        for(int i=0;i<n;i++){
+            adj.add(new ArrayList<>());
+            for(int j=0;j<adjacencyList.get(i).size();j++){
+                int v = (int)adjacencyList.get(i).get((j)).first();
+                double w = (double)adjacencyList.get(i).get(j).second();
+                adj.get(i).add(v);
+                EdgeList.add(new Triple(-w,i,v));
+            }
+        }
+
+
+        Collections.sort(EdgeList);
+
+        double mst_cost = 0.0;
+        int cc = numberCC(adj);
+        for(int i=0;i<EdgeList.size();i++){
+            int u = EdgeList.get(i).second();
+            int v = EdgeList.get(i).third();
+            double w = - EdgeList.get(i).first();
+
+
+            adj.get(u).remove((Integer)v);
+            adj.get(v).remove((Integer)u);
+            if(g.checkEdge(u,v)){
+                adj.get(u).add(v);
+                adj.get(v).add(u);
+                continue;
+            }
+            int new_cc = numberCC(adj);
+            if(new_cc != cc){
+                mst_cost += w;
+                adj.get(u).add(v);
+                adj.get(v).add(u);
+                g.addEdge(u,v,w);
+            }
+        }
+        System.out.println("KruskalI: " + mst_cost);
+        return g;
+    }
+
+    void process(int vtx ,Vector<Boolean> taken, PriorityQueue<Triple> pq) { //  we do not need to use -ve sign to reverse the sort order
+        taken.set(vtx, true);
+        for (int j = 0; j < adjacencyList.get(vtx).size(); j++) {
+            Pair v = adjacencyList.get(vtx).get(j);
+            if (!taken.get( (Integer)v.first()))
+                pq.offer(new Triple((Double)v.second(), vtx,(Integer)v.first()));
+        }
+    }
+
+    Graph Prim(){
+        int n = adjacencyList.size();
+        Graph g = new Graph(n,0,false);
+
+        Vector<Boolean> taken = new Vector<Boolean>(); // global boolean flag to avoid cycle
+        PriorityQueue<Triple> pq = new PriorityQueue<>();
+
+        for(int i=0;i<n;i++){
+            taken.add(false);
+        }
+        double mst_cost = 0.0;
+        for(int i=0;i<n;i++){
+            if(!taken.get(i)){
+                process(i,taken,pq);
+                while (!pq.isEmpty()) { // repeat until V vertices (E=V-1 edges) are taken
+                    Triple front = pq.peek(); pq.poll();
+                    int u = front.second(),v = front.third();
+                    double w = front.first();   // no need to negate id/weight
+                    if (!taken.get(v)) {           // we have not connected this vertex yet
+                        mst_cost += w;
+                        g.addEdge(u,v,w);
+                        process(v,taken,pq); // take u, process all edges incident to u
+                    }
+                }
+            }
+        }
+        System.out.println("PRIM: " + mst_cost);
+        System.out.println();
+        return g;
+    }
 
 
 
@@ -455,7 +601,7 @@ public class Graph {
     public  void writeGephiFileW(String name){
         try(Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(name + ".csv"), "UTF-8"))) {
 
-            writer.write("source;target;weight\n");
+            writer.write("source;target;label\n");
 
             for(int i=0;i<this.adjacencyList.size();i++){
                 for(int j=0;j<this.adjacencyList.get(i).size();j++){

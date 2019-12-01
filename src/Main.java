@@ -12,6 +12,8 @@ public class Main {
 
 // Project 1
 
+
+/*
         Graph g1 = Graph.graphGeneratorErdosRenyi(30,100,false,false);
         g1.writeGephiFile("Erdos30");
 
@@ -54,7 +56,7 @@ public class Main {
 
         Graph g12 = Graph.graphGeneratorGeographic(500,0.1,false,false);
         g12.writeGephiFile("Geographic500");
-
+*/
 
 ///// PROJECT 2 /////////
 
@@ -262,6 +264,221 @@ public class Main {
         g2.writeGephiFile("Geographic500Output");
 
 */
+//// PROJECT 4
 
+        Graph g1 = Graph.graphGeneratorErdosRenyi(30,100,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Erdos30Input");
+        Graph g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Erdos30KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Erdos30KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Erdos30Prim");
+
+
+
+
+        g1 = Graph.graphGeneratorErdosRenyi(100,300,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Erdos100Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Erdos100KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Erdos100KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Erdos100Prim");
+
+
+
+
+
+        g1 = Graph.graphGeneratorErdosRenyi(500,750,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Erdos500Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Erdos500KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Erdos500KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Erdos500Prim");
+
+
+
+        g1 = Graph.graphGeneratorGilbert(30,0.5,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert30Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Gilbert30KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Gilbert30KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Gilbert30Prim");
+
+
+        g1 = Graph.graphGeneratorGilbert(100,0.2,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert100Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Gilbert100KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Gilbert100KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Gilbert100Prim");
+
+
+        g1 = Graph.graphGeneratorGilbert(500,0.02,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert500Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Gilbert500KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Gilbert500KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Gilbert500Prim");
+
+
+
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(30,15,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Albert30Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Albert30KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Albert30KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Albert30Prim");
+
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(100,15,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Albert100Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Albert100KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Albert100KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Albert100Prim");
+
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(500,5,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Albert500Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Albert500KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Albert500KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Albert500Prim");
+
+
+
+        g1 = Graph.graphGeneratorGeographic(30,0.5,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic30Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Geographic30KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Geographic30KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Geographic30Prim");
+
+
+        g1 = Graph.graphGeneratorGeographic(100,0.3,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic100Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Geographic100KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Geographic100KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Geographic100Prim");
+
+
+        g1 = Graph.graphGeneratorGeographic(500,0.2,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic500Input");
+        g2 = g1.Kruskal_D();
+        g2.writeGephiFileW("Geographic500KruskalD");
+        g2 = g1.Kruskal_I();
+        g2.writeGephiFileW("Geographic500KruskalI");
+        g2 = g1.Prim();
+        g2.writeGephiFileW("Geographic500Prim");
+/*
+        g1 = Graph.graphGeneratorErdosRenyi(100,100,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Erdos100Input");
+        g2 = g1.Dijkstra(g1.Nodes.get(0));
+        g2.writeGephiFile("Erdos100Output");
+
+        g1 = Graph.graphGeneratorErdosRenyi(500,500,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Erdos500Input");
+        g2 = g1.Dijkstra(g1.Nodes.get(0));
+        g2.writeGephiFile("Erdos500Output");
+
+
+
+
+        g1 = Graph.graphGeneratorGilbert(30,0.3,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert30Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Gilbert30Output");
+
+        g1 = Graph.graphGeneratorGilbert(100,0.3,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert100Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Gilbert100Output");
+
+        g1 = Graph.graphGeneratorGilbert(500,0.3,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Gilbert500Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Gilbert500Output");
+
+
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(30,15,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("BarabasiAlbert30Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("BarabasiAlbert30Output");
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(100,15,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("BarabasiAlbert100Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("BarabasiAlbert100Output");
+
+        g1 = Graph.graphGeneratorBarabasiAlbert(500,15,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("BarabasiAlbert500Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("BarabasiAlbert500Output");
+
+
+
+
+        g1 = Graph.graphGeneratorGeographic(30,0.2,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic30Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Geographic30Output");
+
+        g1 = Graph.graphGeneratorGeographic(100,0.3,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic100Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Geographic100Output");
+
+        g1 = Graph.graphGeneratorGeographic(500,0.2,false,false);
+        g1.randomEdgeValues(1,100);
+        g1.writeGephiFileW("Geographic500Input");
+        g2 = g1.Dijkstra((g1.Nodes.get(0)));
+        g2.writeGephiFile("Geographic500Output");
+        */
     }
 }
